@@ -1,3 +1,15 @@
-FROM ubuntu
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+FROM node:0.12
+
+COPY . /www/app
+
+RUN npm install -g cordova ionic
+RUN npm install -g bower
+RUN npm install -g gulp
+
+WORKDIR /www/app
+RUN npm install
+
+EXPOSE 8100
+
+ENTRYPOINT ["ionic"]
+CMD ["serve", "8100", "--address", "0.0.0.0"]
